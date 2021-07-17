@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 
-const Login = () => {
+import axiosWithAuth from "../helpers/axiosWithAuth";
+
+const Login = (props) => {
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
 
@@ -23,13 +24,16 @@ const Login = () => {
   // Handle submit function
   const handleSubmit = e => {
     e.preventDefault();
-    axios.post("http://localhost:5000/api/login", formValues)
+    axiosWithAuth().post("/login", formValues)
       .then(res => {
         localStorage.setItem("token", res.data.payload)
         console.log("Logged In")
-        
+        props.history.push("/protected")
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        setError("Username or Password not valid.")
+        console.log(err)
+      })
   }
 
 
@@ -58,7 +62,7 @@ const Login = () => {
           value={formValues.password}
           onChange={handleChange}
           />
-          <button>Login</button>
+          <button id="submit">Login</button>
         </form>
       </div>
 
