@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const Login = () => {
   // make a post request to retrieve a token from the api
@@ -9,29 +10,38 @@ const Login = () => {
     username:"",
     password: ""
   })
-
+  const [error, setError] = useState("")
   // Change handler
   const handleChange = e => {
     setFormValues({
       ...formValues,
       [e.target.name]: e.target.value
-    })
-  }
+    });
+  };
 
 
   // Handle submit function
+  const handleSubmit = e => {
+    e.preventDefault();
+    axios.post("http://localhost:5000/api/login", formValues)
+      .then(res => {
+        localStorage.setItem("token", res.data.payload)
+        console.log("Logged In")
+        
+      })
+      .catch(err => console.log(err))
+  }
 
 
 
-
-  const error = "";
+  // const error = "";
   //replace with error state
 
   return (
     <div>
       <h1>Welcome to the Bubble App!</h1>
       <div data-testid="loginForm" className="login-form">
-        <form>
+        <form onSubmit={handleSubmit}>
           <input 
           type="text"
           id="username"
