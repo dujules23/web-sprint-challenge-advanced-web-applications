@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import PrivateRoute from "./components/PrivateRoute";
+import axiosWithAuth from "./helpers/axiosWithAuth";
 
 import Login from "./components/Login";
 import BubblePage from "./components/BubblePage";
@@ -9,9 +10,23 @@ import "./styles.scss";
 
 function App() {
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    console.log("Logged Out")
+    axiosWithAuth().post("/logout")
+      .then(res => {
+        console.log("Logged Out", res)
+        localStorage.removeItem("token");
+        window.location.href = "http://localhost:3000/login"
+      })
+     
+      .catch(err => console.log(err))
+      
   }
+
+  // or
+  // const handleLogout = () => {
+    // localStorage.removeItem("token");
+    // console.log("Logged Out")
+  // }
+
 
   return (
     <Router>
