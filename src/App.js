@@ -14,7 +14,7 @@ function App() {
       .then(res => {
         console.log("Logged Out", res)
         localStorage.removeItem("token");
-        window.location.href = "http://localhost:3000/login"
+        window.location.href = "http://localhost:3000/"
       })
      
       .catch(err => console.log(err))
@@ -39,7 +39,7 @@ function App() {
 
         <Switch>
           <PrivateRoute exact path="/protected" component={BubblePage}/>
-          <Route exact path="/login" component={Login} />
+          <Route exact path="/" component={Login} />
         </Switch>  
       </div>
     </Router>
