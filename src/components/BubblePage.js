@@ -34,23 +34,28 @@ const BubblePage = (props) => {
   };
 
   const saveEdit = (editColor) => {
-    // editColor = JSON.parse(editColor.id)
-    console.log(editColor)
-    axiosWithAuth().put(`/colors/${editColor.id}`, colors)
+    // console.log(editColor.id)
+    // console.log(colors)
+    axiosWithAuth().put(`/colors/${editColor.id}`, editColor)
       .then(res => {
         console.log(res)
-        setEditing(res)
-      })
-      .catch(err => {
-        console.log(err)
+        
+        setColors([
+          ...colors.filter((color) => 
+            color.id !== editColor.id
+          ), res.data
+
+        ])
+        
         
       })
+      .catch(err => console.log(err))
   };
 
 
   // deleteColor with appropriate filter to remove color from the list
   const deleteColor = (colorToDelete) => {
-    axiosWithAuth().delete(`/colors/${colorToDelete.id}`, colors)
+    axiosWithAuth().delete(`/colors/${colorToDelete.id}`)
       .then(res => {
         console.log(res)
         setColors(
